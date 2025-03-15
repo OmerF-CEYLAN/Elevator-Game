@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 363044110}
   - component: {fileID: 363044109}
   - component: {fileID: 363044108}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,13 +477,14 @@ MonoBehaviour:
   zInput: 0
   walkSpeed: 5
   runSpeed: 15
-  checkRadius: 1
+  distanceToGround: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   groundCheck: {fileID: 775487145}
   jumpHeight: 1.5
   dampingFactor: 0.025
+  radius: 1
 --- !u!143 &394029832
 CharacterController:
   m_ObjectHideFlags: 0

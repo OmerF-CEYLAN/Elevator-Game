@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private float walkSpeed,runSpeed;
 
     [SerializeField]
-    float checkRadius;
+    float distanceToGround;
 
     bool isGrounded = true;
 
@@ -68,7 +68,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, checkRadius, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, distanceToGround, groundMask);
+
 
         if (isGrounded && velocity.y < 0f)
         {
@@ -101,11 +102,16 @@ public class PlayerMovement : MonoBehaviour
 
             velocity.x = Mathf.Lerp(velocity.x, 0f, currentDampingFactor);
             velocity.z = Mathf.Lerp(velocity.z, 0f, currentDampingFactor);
+
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                currentDampingFactor = dampingFactor * 10;
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.W))
         {
-            currentDampingFactor = dampingFactor * 2;
+            currentDampingFactor = dampingFactor * 10;
         }
 
         velocity.y += gravity * Time.deltaTime;
