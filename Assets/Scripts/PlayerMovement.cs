@@ -23,7 +23,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     LayerMask groundMask;
 
-    float gravity = -9.81f;
+    [SerializeField]
+    float gravity = -50;
 
     Vector3 velocity;
 
@@ -37,9 +38,12 @@ public class PlayerMovement : MonoBehaviour
 
     float elasedTime;
 
+    PlayerSounds playerSounds;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerSounds = GetComponent<PlayerSounds>();
     }
 
     
@@ -51,14 +55,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        if (!isGrounded)
+        {
+            return;
+        }
+
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            currentSpeed = runSpeed;
+            playerSounds.OnRunFootstepDelay();
+        }
+        else
+        {
+            currentSpeed = walkSpeed;
+            playerSounds.OnWalkFootstepDelay();
+        }
+
 
         xInput = Input.GetAxisRaw("Horizontal") * Time.deltaTime * currentSpeed;
         zInput = Input.GetAxisRaw("Vertical") * Time.deltaTime * currentSpeed;
 
-        if (!isGrounded)
+        if(xInput != 0 || zInput != 0)
         {
-            xInput = zInput = 0f;
+            playerSounds.PlayFootstepSound();
         }
 
         Vector3 moveDirection = transform.TransformDirection(new Vector3(xInput, 0f, zInput));
@@ -83,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && Input.GetKey(KeyCode.W) && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            velocity += transform.forward * walkSpeed;
+            velocity += transform.forward * currentSpeed;
         }
         else if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -97,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (elasedTime <= 0.2f && Input.GetKey(KeyCode.W))
             {
-                velocity = transform.TransformDirection(new Vector3(0f, velocity.y, walkSpeed));
+                velocity = transform.TransformDirection(new Vector3(0f, velocity.y, currentSpeed));
             }
 
             velocity.x = Mathf.Lerp(velocity.x, 0f, currentDampingFactor);
