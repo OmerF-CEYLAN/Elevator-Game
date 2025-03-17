@@ -40,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
 
     PlayerSounds playerSounds;
 
+    [SerializeField]
+    float lateJumpInterval;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -62,12 +65,12 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetKey(KeyCode.LeftShift))
         {
-            currentSpeed = runSpeed;
+            currentSpeed = Mathf.Lerp(currentSpeed, runSpeed, dampingFactor);
             playerSounds.OnRunFootstepDelay();
         }
         else
         {
-            currentSpeed = walkSpeed;
+            currentSpeed = Mathf.Lerp(currentSpeed, walkSpeed, dampingFactor * 2f);
             playerSounds.OnWalkFootstepDelay();
         }
 
@@ -75,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         xInput = Input.GetAxisRaw("Horizontal") * Time.deltaTime * currentSpeed;
         zInput = Input.GetAxisRaw("Vertical") * Time.deltaTime * currentSpeed;
 
-        if(xInput != 0 || zInput != 0)
+        if(xInput != 0 || zInput != 0) // if you are pressing keys to move
         {
             playerSounds.PlayFootstepSound();
         }
@@ -83,12 +86,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = transform.TransformDirection(new Vector3(xInput, 0f, zInput));
 
         characterController.Move(moveDirection);
+
+
     }
 
     private void Jump()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, distanceToGround, groundMask);
-
 
         if (isGrounded && velocity.y < 0f)
         {
@@ -111,10 +115,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isGrounded)
         {
-
             elasedTime += Time.deltaTime;
 
-            if (elasedTime <= 0.2f && Input.GetKey(KeyCode.W))
+            if (elasedTime <= lateJumpInterval && Input.GetKey(KeyCode.W))
             {
                 velocity = transform.TransformDirection(new Vector3(0f, velocity.y, currentSpeed));
             }

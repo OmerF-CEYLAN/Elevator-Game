@@ -12,12 +12,16 @@ public class MouseLook : MonoBehaviour
 
     float xRotation,yRotation;
 
+    float freeLookYRotation;
+
     [SerializeField]
     float xMax;
 
+    float tempYRotation, tempXRotation;
+
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     
@@ -29,12 +33,41 @@ public class MouseLook : MonoBehaviour
         xRotation -= yInput;
         yRotation += xInput;
 
-        playerTransform.rotation = Quaternion.Euler(0f, yRotation,0f);
+        xRotation =  gameObject.CompareTag("FP Cam") ?  Mathf.Clamp(xRotation, -xMax, xMax) : Mathf.Clamp(xRotation, -30f, 40f);
 
-        xRotation = Mathf.Clamp(xRotation, -xMax, xMax);
+        if(gameObject.CompareTag("TP Cam"))
+        {
+            transform.parent.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        if (gameObject.CompareTag("TP Cam"))
+        {
 
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            {
+                tempXRotation = xRotation;
+                tempYRotation = yRotation;
+            }
+            if (Input.GetKey(KeyCode.LeftAlt))
+            {
+                freeLookYRotation += xInput;
+                transform.parent.localRotation = Quaternion.Euler(xRotation, freeLookYRotation, 0f);
+                return;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftAlt))
+            {
+               xRotation = tempXRotation;
+               yRotation = tempYRotation;
+            }
+
+            freeLookYRotation = 0f;
+        }
+
+        playerTransform.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
     }
 }
