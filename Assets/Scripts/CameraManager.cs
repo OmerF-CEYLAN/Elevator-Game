@@ -13,6 +13,11 @@ namespace Assets.Scripts
         [SerializeField]
         List<GameObject> cameras;
 
+        [SerializeField]
+        CameraController controller;
+
+        CameraController lastCameraController;
+
         [SerializeField] 
         private KeyCode switchCameraKey = KeyCode.C;
 
@@ -21,6 +26,7 @@ namespace Assets.Scripts
 
         void Awake()
         {
+            controller = cameras[0].GetComponent<CameraController>();
             switchStrategy = new SequentialCameraSwitchStrategy();
         }
 
@@ -47,9 +53,17 @@ namespace Assets.Scripts
         {
             if (cameras.Count == 0) return;
 
+            lastCameraController = cameras[activeCameraIndex].GetComponent<CameraController>();
+
             DisableAllCameras();
 
             activeCameraIndex = switchStrategy.GetNextCameraIndex(activeCameraIndex, cameras.Count);
+
+            controller = cameras[activeCameraIndex].GetComponent<CameraController>();
+
+            controller.SetHorizontalRotation(lastCameraController.GetHorizontalRotation());
+
+            controller.SetVerticalRotation(lastCameraController.GetVerticalRotation());
 
             ActivateCamera(activeCameraIndex);
         }

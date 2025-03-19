@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 170627691}
   - component: {fileID: 170627693}
   - component: {fileID: 170627692}
-  - component: {fileID: 170627694}
+  - component: {fileID: 170627696}
   - component: {fileID: 170627695}
   m_Layer: 6
   m_Name: FP Player Cam
@@ -217,23 +217,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &170627694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 170627690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2eae133cde208c4381d5d4adf8fc584, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xInput: 0
-  yInput: 0
-  sensitivity: 50
-  playerTransform: {fileID: 394029833}
-  xMax: 90
 --- !u!114 &170627695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,6 +261,21 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &170627696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170627690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd6a4c14b35f6f439cf6b344a5d94b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivity: 80
+  maxVerticalAngle: 60
+  playerTransform: {fileID: 394029833}
 --- !u!1 &394029830
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +521,9 @@ MonoBehaviour:
   cameras:
   - {fileID: 170627690}
   - {fileID: 1321659044}
+  controller: {fileID: 0}
   switchCameraKey: 99
+  lastHorizontalRotation: 0
 --- !u!1001 &417202732
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 1321659045}
   - component: {fileID: 1321659049}
   - component: {fileID: 1321659048}
-  - component: {fileID: 1321659047}
+  - component: {fileID: 1321659050}
   - component: {fileID: 1321659046}
   m_Layer: 6
   m_Name: TP Player Cam
@@ -1134,23 +1134,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!114 &1321659047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1321659044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2eae133cde208c4381d5d4adf8fc584, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xInput: 0
-  yInput: 0
-  sensitivity: 50
-  playerTransform: {fileID: 394029833}
-  xMax: 90
 --- !u!81 &1321659048
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1210,6 +1193,23 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1321659050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321659044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dcb85a2c184d504997237cac94bc783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivity: 80
+  maxVerticalAngle: 40
+  playerTransform: {fileID: 394029833}
+  freeLookKeyCode: 308
+  cameraRig: {fileID: 2089722118}
 --- !u!1 &1675871726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,7 +1409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2089722118}
   m_Layer: 6
-  m_Name: TP Cam Turn Point
+  m_Name: CameraRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
